@@ -83,7 +83,7 @@ class Reminders(commands.Cog):
         # Parse time like "10m", "2h", "1d"
         seconds = self.parse_time(due_time)
         if seconds is None:
-            return await ctx.send("Invalid time format! Use examples: `10m`, `2h`, `1d`, '7y'.")
+            return await ctx.send("Invalid time format! Use examples: `10m`, `2h`, `1d`, `7y`.")
 
         due_timestamp = (datetime.utcnow().timestamp() + seconds)
 

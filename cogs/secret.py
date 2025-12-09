@@ -3,6 +3,9 @@ from discord.ext import commands
 import random
 import time
 
+from discord.utils import utcnow
+from datetime import timedelta
+
 class Secret(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -14,7 +17,7 @@ class Secret(commands.Cog):
         await ctx.send("This is a secret command!\nOnly super secret users can do this command")
 
 
-    @commands.command(name="russian_roulette", help="Play a game of Russian Roulette and risk gettign timedout of the server.")
+    @commands.command(name="russian_roulette", help="Play a game of Russian Roulette and risk getting timedout of the server.")
     async def russian_roulette(self, ctx):
         await ctx.send("You are playing Russian Roulette with your Operating System...\nSpinning the cylinder...")
         start_time = time.time()
@@ -22,10 +25,16 @@ class Secret(commands.Cog):
         while (time.time() - start_time) < delay_seconds:
             await ctx.send("AND...")
 
+
         chance = random.randint(1, 6)
         if chance == 1:
+            timeout_until = utcnow() + timedelta(seconds=60)
             await ctx.send("Bang! Your Operating System has crashed!")
-            await ctx.author.timeout(duration=60, reason="Lost at Russian Roulette.")
+            await ctx.author.timeout(timeout_until, reason="Lost at Russian Roulette.")
+            try:
+                await ctx.author.timeout(timeout_until, reason="Lost at Russian Roulette.")
+            except discord.Forbidden:
+                await ctx.send("I don't have permission to timeout you!")
         else:
             await ctx.send("Click! You survived this round of Russian Roulette.\n"
             "Your Operating System is safe... for now.....")

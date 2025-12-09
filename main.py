@@ -26,6 +26,7 @@ intents = discord.Intents.default()
 intents.message_content = True  # Needed to read message content
 intents.members = True  # Needed to access member information
 
+
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 async def load_all_cogs():
